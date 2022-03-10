@@ -1,12 +1,14 @@
 package com.activitytracker.foodlogger.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+
+import com.activitytracker.foodlogger.View.MealView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import javax.persistence.*;
 
 @Entity
+@JsonView(MealView.Extended.class)
 public class MealLog {
 
     @Id
@@ -15,15 +17,18 @@ public class MealLog {
 
     private String foodItem;
 
-    private Date mealDate;
+    @ManyToOne
+    @JsonIgnore
+    private Meal meal;
 
     public MealLog() {
     }
 
-    public MealLog(String foodItem) {
-
+    public MealLog(String foodItem, Meal meal) {
         this.foodItem = foodItem;
+        this.meal = meal;
     }
+
 
     public Integer getId() {
         return id;
@@ -39,5 +44,15 @@ public class MealLog {
 
     public void setFoodItem(String foodItem) {
         this.foodItem = foodItem;
+    }
+
+
+
+    public Meal getMeal() {
+        return meal;
+    }
+
+    public void setMeal(Meal meal) {
+        this.meal = meal;
     }
 }

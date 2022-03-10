@@ -1,11 +1,15 @@
 package com.activitytracker.foodlogger.Model;
 
+import com.activitytracker.foodlogger.View.MealView;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@JsonView(MealView.Extended.class)
 public class User {
 
     @Id
