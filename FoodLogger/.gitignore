@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Credential files ###
+creds/apiId.txt
+creds/dsCreds.txt
