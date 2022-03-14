@@ -18,11 +18,22 @@ public class User {
 
     private String name;
     private String email;
+    private String gender;
+
+    private double height;
+    private String heightUnit;
+
+    private double weight;
+    private String weightUnit;
+
+    private short age;
 
     public User(String name, String email) {
         this.name = name;
         this.email = email;
     }
+
+
 
     public User(Integer id, String name, String email) {
         this.id = id;
@@ -57,5 +68,53 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public String getHeightUnit() {
+        return heightUnit;
+    }
+
+    public void setHeightUnit(String heightUnit) {
+        this.heightUnit = heightUnit;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getWeightUnit() {
+        return weightUnit;
+    }
+
+    public void setWeightUnit(String weightUnit) {
+        this.weightUnit = weightUnit;
+    }
+
+    public short getAge() {
+        return age;
+    }
+
+    public void setAge(short age) {
+        this.age = age;
     }
 }

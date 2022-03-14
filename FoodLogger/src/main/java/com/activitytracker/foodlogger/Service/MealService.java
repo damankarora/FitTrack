@@ -3,7 +3,6 @@ package com.activitytracker.foodlogger.Service;
 import com.activitytracker.foodlogger.Model.Meal;
 import com.activitytracker.foodlogger.Model.User;
 import com.activitytracker.foodlogger.Repository.MealRepository;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,8 +31,8 @@ public class MealService {
 
         mealToAdd.setUser(userFound);
         mealRepository.save(mealToAdd);
-
     }
+
 
     public void updateMeal(Meal mealToUpdate){
         mealRepository.save(mealToUpdate);
@@ -47,23 +46,7 @@ public class MealService {
             throw new NoSuchElementException("User not found");
         }
 
-
-
-        return ridLogs(mealRepository.findAllByUserId(Integer.valueOf(userId)));
-    }
-
-    private List<Meal> ridLogs(List<Meal> meals){
-//        List<Meal> mealsToReturn = new ArrayList<>();
-//
-//        for (Meal meal : meals){
-//            Meal newMeal = new Meal();
-//            newMeal.setMealId(meal.getMealId());
-//            newMeal.setMealTitle(meal.getMealTitle());
-//            newMeal.setMealDate(meal.getMealDate());
-//            mealsToReturn.add(newMeal);
-//        }
-//        return mealsToReturn;
-        return meals;
+        return mealRepository.findAllByUserId(Integer.valueOf(userId));
     }
 
     public void deleteMeal(String mealId){
@@ -82,7 +65,7 @@ public class MealService {
         }
 
 
-        return ridLogs(Collections.singletonList(foundMeal)).get(0);
+        return foundMeal;
 
     }
 }

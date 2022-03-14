@@ -1,1 +1,2 @@
-Daman6232
+<dbUsername>
+<dbPassword>

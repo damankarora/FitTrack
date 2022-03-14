@@ -1,10 +1,12 @@
 package com.activitytracker.foodlogger.Service;
 
+import com.activitytracker.foodlogger.Asynchronous.UpdateNutrients;
 import com.activitytracker.foodlogger.Model.Meal;
 import com.activitytracker.foodlogger.Model.MealLog;
 import com.activitytracker.foodlogger.Repository.MealLogRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,12 +15,14 @@ public class MealLogService {
     private final MealLogRepository mealLogRepository;
     private final MealService mealService;
 
+
     public MealLogService(MealLogRepository mealLogRepository, MealService mealService) {
         this.mealLogRepository = mealLogRepository;
         this.mealService = mealService;
+
     }
 
-    public void addMealLog(MealLog mealLogToAdd){
+    public void updateMealLog(MealLog mealLogToAdd){
         mealLogRepository.save(mealLogToAdd);
     }
 
@@ -26,12 +30,19 @@ public class MealLogService {
         return mealLogRepository.findAllByMealMealId(mealId);
     }
 
-    public void addMultipleMealLogs(List<String> foodItems, Meal parentMeal){
+    public List<MealLog> addMultipleMealLogs(List<String> foodItems, Meal parentMeal){
+
+        List<MealLog> addedLog = new ArrayList<>();
+
         for (String foodItem : foodItems){
             MealLog mealLogToAdd = new MealLog(foodItem, parentMeal);
-
             mealLogRepository.save(mealLogToAdd);
+
+            addedLog.add(mealLogToAdd);
         }
+
+
+        return addedLog;
     }
 
     public void deleteMealLog(Integer mealLogId){
