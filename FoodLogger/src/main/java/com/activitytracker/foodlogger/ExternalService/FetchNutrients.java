@@ -25,8 +25,6 @@ public class FetchNutrients {
     public FetchNutrientsResponse fetchData(String foods){
         String url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 
-
-
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.APPLICATION_JSON);
