@@ -1,29 +1,29 @@
-package com.activitytracker.foodlogger.ExternalService;
+package com.example.exerciselogger.ExternalService.Nutrionix;
 
-import com.activitytracker.foodlogger.Configuration.DataSourceConfig;
+import com.example.exerciselogger.Configuration.DataSourceConfig;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import java.util.HashMap;
+
 import java.util.Map;
 
 @Service
-public class FetchNutrients {
+public class FetchActivityDetails {
 
     private final RestTemplate restTemplate;
 
     private final String apiId;
     private final String apiKey;
 
-    public FetchNutrients(RestTemplateBuilder restTemplateBuilder, DataSourceConfig dataSourceConfig) {
+    public FetchActivityDetails(RestTemplateBuilder restTemplateBuilder, DataSourceConfig dataSourceConfig) {
         this.restTemplate = restTemplateBuilder.build();
         this.apiId = dataSourceConfig.getApiId();
         this.apiKey = dataSourceConfig.getApiKey();
     }
 
-    public FetchNutrientsResponse fetchData(String foods){
-        String url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+    public FetchActivityDetailsResponse fetchData(Map<String, Object> requestBody){
+        String url = "https://trackapi.nutritionix.com/v2/natural/exercise";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -32,13 +32,11 @@ public class FetchNutrients {
         headers.set("x-app-id", this.apiId);
         headers.set("x-app-key", this.apiKey);
 
-        Map<String, Object> objectMap = new HashMap<>();
 
-        objectMap.put("query", foods);
 
-        HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(objectMap, headers);
+        HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<FetchNutrientsResponse> response = this.restTemplate.postForEntity(url, httpEntity, FetchNutrientsResponse.class);
+        ResponseEntity<FetchActivityDetailsResponse> response = this.restTemplate.postForEntity(url, httpEntity, FetchActivityDetailsResponse.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
@@ -49,4 +47,6 @@ public class FetchNutrients {
         }
 
     }
+
+
 }

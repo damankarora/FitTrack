@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ExerciseController {
 
-    private TrackExercise trackExercise;
+    private final TrackExercise trackExercise;
 
     public ExerciseController(TrackExercise trackExercise) {
         this.trackExercise = trackExercise;
