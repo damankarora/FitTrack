@@ -15,7 +15,7 @@ public class ExerciseController {
 
     @RequestMapping("/exercise")
     public String callExercise(){
-        return trackExercise.addActivity();
+        return trackExercise.callExerciseLogger();
     }
 
 }
