@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -34,8 +35,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) throws NoSuchElementException{
         System.out.println(user.getName() + " " + user.getId());
+
+        User foundUser = userRepository.findById(user.getId()).orElse(null);
+
+        if (foundUser == null){
+            throw new NoSuchElementException("User not found");
+        }
         userRepository.save(user);
     }
 }
