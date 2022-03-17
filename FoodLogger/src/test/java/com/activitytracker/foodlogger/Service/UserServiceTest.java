@@ -5,7 +5,11 @@ import com.activitytracker.foodlogger.Repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
     private final UserRepository userRepository = Mockito.mock(UserRepository.class);
+    private final UserService userService = new UserService(userRepository);
 
     @Test
     @DisplayName("Should return a user by Id")
-    public void shouldReturnuserById(){
-        UserService userService = new UserService(userRepository);
+    public void shouldReturnUserById(){
+
 
         String testEmail = "dummyemail@gmail.com";
         Integer testUserId = 1;
@@ -45,7 +50,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Should return null if id is invalid")
     public void shouldReturnNullIfInvalid(){
-        UserService userService = new UserService(userRepository);
+
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.empty());
         User foundUser = userService.getUserDetails(1);
@@ -59,8 +64,6 @@ public class UserServiceTest {
         String testEmail = "dummyemail@gmail.com";
         String testName = "Daman";
 
-        UserService userService = new UserService(userRepository);
-
         User userToAdd = new User();
         userToAdd.setName(testName);
         userToAdd.setEmail(testEmail);
@@ -73,12 +76,78 @@ public class UserServiceTest {
     @DisplayName("Should not add user when mandatory fields are missing")
     public void shouldNotAddUser(){
 
-        UserService userService = new UserService(userRepository);
-
         User userToAdd = new User();
 
         Mockito.when(userRepository.save(userToAdd)).thenThrow(new RuntimeException("Mandatory fields cannot be empty"));
 
         assertThrows(RuntimeException.class, () -> userService.addNewUser(userToAdd));
     }
+
+    @Test@DisplayName("Should update user data when Id is correct")
+    public void shouldUpdateUserData(){
+
+        Integer testId = 1;
+        String testName = "New name";
+
+        User userToUpdate = new User();
+        userToUpdate.setId(testId);
+        userToUpdate.setName("old Name");
+
+        Mockito.when(userRepository.findById(testId)).thenReturn(Optional.of(userToUpdate));
+
+        User userWithUpdatedData = new User();
+        userWithUpdatedData.setName(testName);
+        userWithUpdatedData.setId(testId);
+
+        assertDoesNotThrow(()->userService.updateUser(userWithUpdatedData));
+    }
+
+    @Test
+    @DisplayName("Should not update when Id is invalid")
+    public void shouldNotUpdateInvalidId(){
+
+        Integer testId = 1;
+        String testName = "New name";
+
+        Mockito.when(userRepository.findById(testId)).thenReturn(Optional.empty());
+
+        User userWithUpdatedData = new User();
+        userWithUpdatedData.setName(testName);
+        userWithUpdatedData.setId(testId);
+
+        NoSuchElementException e = assertThrows(NoSuchElementException.class, () -> userService.updateUser(userWithUpdatedData));
+
+        assertEquals("User not found", e.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should delete a user with correct Id")
+    public void shouldDeleteUser(){
+
+        Integer testId = 1;
+        assertDoesNotThrow(()->userService.deleteUser(testId));
+    }
+
+    @Test
+    @DisplayName("Should not delete user with incorrect Id")
+    public void shouldNotDeleteUser(){
+        Integer testId = 1;
+        Mockito.doThrow(new EmptyResultDataAccessException(1)).when(userRepository).deleteById(testId);
+
+        assertThrows(EmptyResultDataAccessException.class, () -> userService.deleteUser(testId));
+    }
+
+    @Test
+    @DisplayName("Should return all the Users")
+    public void shouldReturnAllUsers(){
+        List<User> userList = Arrays.asList(
+                new User(1, "Daman", "damanarora@gmail.com"),
+                new User(2, "Daman2", "damanarora@gmail2.com"),
+                new User(3, "Daman3", "damanarora@gmail3.com"));
+        Mockito.when(userRepository.findAll()).thenReturn(userList);
+
+        assertEquals(3, userService.getAllUsers().size());
+
+    }
+
 }
