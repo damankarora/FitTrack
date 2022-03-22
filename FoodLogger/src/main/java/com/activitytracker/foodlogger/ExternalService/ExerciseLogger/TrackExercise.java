@@ -27,7 +27,7 @@ public class TrackExercise {
         this.userService = userService;
     }
 
-    public Activity addNewActivity(List<String> query, Integer userId){
+    public List<Activity> addNewActivity(List<String> query, Integer userId, Date date){
         User foundUser = userService.getUserDetails(userId);
 
         if (foundUser == null){
@@ -41,16 +41,18 @@ public class TrackExercise {
         addExercisePayload.setAge(foundUser.getAge());
         addExercisePayload.setHeightCm(foundUser.getHeight());
         addExercisePayload.setWeightKg(foundUser.getWeight());
+        addExercisePayload.setDate(date);
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(addExercisePayload.getRequestBody(), headers);
 
-        ResponseEntity<Activity> response = restTemplate.postForEntity(exerciseMSURL+"addActivity", httpEntity, Activity.class);
+        ResponseEntity<Activity[]> response = restTemplate.postForEntity(exerciseMSURL+"addActivity", httpEntity, Activity[].class);
 
         if (response.getStatusCode() == HttpStatus.OK){
-            return response.getBody();
+            return Arrays.asList(Objects.requireNonNull(response.getBody()));
         }
 
         throw new ResponseStatusException(response.getStatusCode(), "Error occured in exercise logger");
@@ -69,6 +71,12 @@ public class TrackExercise {
             }
         }
         if (userId != null){
+
+            User foundUser = userService.getUserDetails(userId);
+            if (foundUser == null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid userid");
+            }
+
             ResponseEntity<Activity[]> response= restTemplate.getForEntity(exerciseMSURL+"/activity/recent/"+userId, Activity[].class);
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null){

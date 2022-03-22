@@ -1,5 +1,6 @@
 package com.activitytracker.foodlogger.ExternalService.ExerciseLogger;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,14 @@ public class AddExercisePayload {
     private double weightKg;
     private double heightCm;
     private short age;
+    private Date date;
 
     public List<String> getQuery() {
         return query;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setQuery(List<String> query) {
@@ -89,6 +95,10 @@ public class AddExercisePayload {
 
         if (this.age > 0){
             objectMap.put("age", this.age);
+        }
+
+        if (this.date != null){
+            objectMap.put("date", this.date);
         }
 
 
