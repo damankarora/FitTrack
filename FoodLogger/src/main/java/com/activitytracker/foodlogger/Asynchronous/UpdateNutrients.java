@@ -6,8 +6,10 @@ import com.activitytracker.foodlogger.ExternalService.FoodNutrition;
 import com.activitytracker.foodlogger.Model.MealLog;
 import com.activitytracker.foodlogger.Service.MealLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +57,12 @@ public class UpdateNutrients extends Thread{
 
              MealLog logToUpdate = this.mealLogs.get(i);
              logToUpdate.parseData(nutrientsList.get(i));
-             mealLogService.updateMealLog(logToUpdate);
+             try {
+                 mealLogService.updateMealLog(logToUpdate);
+             }
+             catch (JpaObjectRetrievalFailureException e){
+                 System.out.println("entity removed");
+             }
 
          }
 

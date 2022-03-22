@@ -1,7 +1,6 @@
 package com.activitytracker.foodlogger.Controller;
 
 import com.activitytracker.foodlogger.Asynchronous.UpdateNutrients;
-import com.activitytracker.foodlogger.Configuration.DataSourceConfig;
 import com.activitytracker.foodlogger.ExternalService.FetchNutrients;
 import com.activitytracker.foodlogger.ExternalService.FetchNutrientsResponse;
 import com.activitytracker.foodlogger.Model.Meal;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,28 +27,18 @@ public class MealController {
     private final UserService userService;
     private final FetchNutrients fetchNutrientsService;
     private final UpdateNutrients updateNutrients;
-    private final DataSourceConfig dataSourceConfig;
 
-    public MealController(MealService mealService, MealLogService mealLogService, UserService userService, FetchNutrients fetchNutrientsService, UpdateNutrients updateNutrients, DataSourceConfig dataSourceConfig) {
+    public MealController(MealService mealService, MealLogService mealLogService, UserService userService, FetchNutrients fetchNutrientsService, UpdateNutrients updateNutrients) {
         this.mealService = mealService;
         this.mealLogService = mealLogService;
         this.userService = userService;
         this.fetchNutrientsService = fetchNutrientsService;
         this.updateNutrients = updateNutrients;
-        this.dataSourceConfig = dataSourceConfig;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "user/{userId}/meals")
     @JsonView(MealView.Overview.class)
     public List<Meal> getAllMeals(@PathVariable String userId){
-
-        try {
-            dataSourceConfig.readValues();
-        }
-        catch (IOException e){
-            System.out.println("could not read file");
-            e.printStackTrace();
-        }
 
         try{
             return mealService.getAllMealsOfUser(userId);
@@ -70,14 +57,9 @@ public class MealController {
             mealService.addNewMeal(mealToAdd, userId);
             List<MealLog> mealLogList = mealLogService.addMultipleMealLogs(mealPayload.getFoodItems(), mealToAdd);
 
-
             updateNutrients.setFood(mealLogList);
             updateNutrients.start();
-
-
             return mealToAdd;
-
-
         }
         catch (NoSuchElementException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
@@ -88,6 +70,7 @@ public class MealController {
     @JsonView(MealView.Extended.class)
     public Meal getMealById(@PathVariable String userId, @PathVariable String mealId){
         try{
+            validateUserId(userId);
             return mealService.getMealById(mealId);
         }
         catch (NoSuchElementException e){

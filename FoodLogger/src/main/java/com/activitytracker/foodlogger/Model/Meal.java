@@ -1,8 +1,6 @@
 package com.activitytracker.foodlogger.Model;
 
 import com.activitytracker.foodlogger.View.MealView;
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
