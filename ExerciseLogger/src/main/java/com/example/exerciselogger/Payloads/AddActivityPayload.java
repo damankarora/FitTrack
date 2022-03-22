@@ -86,7 +86,7 @@ public class AddActivityPayload{
         Map<String, Object> requestBodyMap = new HashMap<>();
 
         requestBodyMap.put("query", String.join(", ", this.query));
-        if (!this.gender.isEmpty()){
+        if (this.gender != null){
             requestBodyMap.put("gender", this.gender);
         }
 

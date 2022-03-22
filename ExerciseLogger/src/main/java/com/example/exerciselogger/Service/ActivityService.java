@@ -32,6 +32,7 @@ public class ActivityService {
             activityToAdd.setUserId(activityPayload.getUserId());
             activityToAdd.setCaloriesBurnt(-1);
             activityToAdd.setActivityDuration(-1);
+            activityToAdd.setDate(activityPayload.getDate());
             activityListToAdd.add(activityToAdd);
         }
 
