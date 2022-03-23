@@ -2,6 +2,14 @@
 
 A microservice architecture application that helps you track your activities and meals. You can track your calorie intake and calories burnt during each activity. It also gives nutrional information about the food you tracked.
 
+## Architecture
+
+![Architecture diagram](https://raw.githubusercontent.com/damankarora/FitTrack/master/Diagrams/micro%20arch.drawio.png)
+
+## Database Schema
+
+![Database Schema](https://raw.githubusercontent.com/damankarora/FitTrack/master/Diagrams/fittrackdb.png)
+
 ## How to run
 
 1. Clone the repository to local.
