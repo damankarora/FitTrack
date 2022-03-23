@@ -20,9 +20,6 @@ public class DataSourceConfig {
     @Value("${spring.datasource.url}")
     private String url;
 
-    @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String ddlAuto;
-
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverName;

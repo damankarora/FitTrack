@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -63,7 +64,12 @@ public class TrackExercise {
 
     public List<Activity> getActivity(Integer activityId, Integer userId){
         if (activityId != null){
-            ResponseEntity<Activity> response = restTemplate.getForEntity(exerciseMSURL + "activity/"+activityId, Activity.class);
+            ResponseEntity<Activity> response;
+            try {
+                response = restTemplate.getForEntity(exerciseMSURL + "activity/" + activityId, Activity.class);
+            }catch (ResourceAccessException e){
+                throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Error from exercise logger");
+            }
             if (response.getStatusCode() == HttpStatus.OK){
                 return Collections.singletonList(response.getBody());
             }else {
