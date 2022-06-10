@@ -1,6 +1,9 @@
 package com.activitytracker.foodlogger.Controller;
 
 import com.activitytracker.foodlogger.Model.User;
+import com.activitytracker.foodlogger.Model.UserCred;
+import com.activitytracker.foodlogger.Payloads.CreateUserPayload;
+import com.activitytracker.foodlogger.Service.UserCredService;
 import com.activitytracker.foodlogger.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,9 +24,11 @@ import java.util.NoSuchElementException;
 public class UserController {
 
     private final UserService userService;
+    private final UserCredService userCredService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserCredService userCredService) {
         this.userService = userService;
+        this.userCredService = userCredService;
     }
 
     @RequestMapping("/")
@@ -36,8 +41,23 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/user")
     @Operation(description = "Create a new User")
-    public void createUser(@RequestBody User user){
-        userService.addNewUser(user);
+    public String createUser(@RequestBody CreateUserPayload user){
+
+        try{
+            UserCred addedUserCred = userCredService.registerUser(user.getUsername(), user.getPassword(), "ROLE_USER");
+            User userDetails = userService.addNewUser(new User(
+                    user.getName(), user.getUsername(), user.getGender(),
+                    user.getHeight(), user.getHeightUnit(), user.getWeight(),
+                    user.getWeightUnit(), user.getAge()
+            ));
+            addedUserCred.setUserDetails(userDetails);
+            userCredService.updateUser(addedUserCred);
+            return "Success";
+        } catch (Exception err) {
+            System.out.println(err);
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Something went wrong");
+        }
+
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user")
