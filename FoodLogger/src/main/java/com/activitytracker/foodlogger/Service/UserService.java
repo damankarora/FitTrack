@@ -17,8 +17,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void addNewUser(User user){
-        userRepository.save(user);
+    public User addNewUser(User user){
+        return userRepository.save(user);
     }
 
     public List<User> getAllUsers(){
@@ -36,7 +36,6 @@ public class UserService {
     }
 
     public void updateUser(User user) throws NoSuchElementException{
-        System.out.println(user.getName() + " " + user.getId());
 
         User foundUser = userRepository.findById(user.getId()).orElse(null);
 

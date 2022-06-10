@@ -33,14 +33,22 @@ public class User {
         this.email = email;
     }
 
-
-
     public User(Integer id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
     }
 
+    public User(String name, String email, String gender, double height, String heightUnit, double weight, String weightUnit, short age) {
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.height = height;
+        this.heightUnit = heightUnit;
+        this.weight = weight;
+        this.weightUnit = weightUnit;
+        this.age = age;
+    }
 
     public User() {
     }
