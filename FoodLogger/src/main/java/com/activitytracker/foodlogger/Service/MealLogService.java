@@ -22,8 +22,8 @@ public class MealLogService {
 
     }
 
-    public void updateMealLog(MealLog mealLogToAdd){
-        mealLogRepository.save(mealLogToAdd);
+    public void updateMealLogs(List<MealLog> mealLogToAdd){
+        mealLogRepository.saveAll(mealLogToAdd);
     }
 
     public List<MealLog> getAllMealLogsByMealId(Integer mealId){

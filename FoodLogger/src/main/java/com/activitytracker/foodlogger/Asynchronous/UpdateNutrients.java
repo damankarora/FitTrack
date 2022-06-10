@@ -10,6 +10,7 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,19 +53,20 @@ public class UpdateNutrients extends Thread{
          }
 
          List<FoodNutrition> nutrientsList = response.getFoods();
+         List<MealLog> mealLogsToUpdate = new ArrayList<>();
 
          for(int i = 0; i < nutrientsList.size(); i ++){
 
              MealLog logToUpdate = this.mealLogs.get(i);
              logToUpdate.parseData(nutrientsList.get(i));
-             try {
-                 mealLogService.updateMealLog(logToUpdate);
-             }
-             catch (JpaObjectRetrievalFailureException e){
-                 System.out.println("entity removed");
-             }
-
+             mealLogsToUpdate.add(logToUpdate);
          }
+        try {
+            mealLogService.updateMealLogs(mealLogsToUpdate);
+        }
+        catch (JpaObjectRetrievalFailureException e){
+            System.out.println("Unable to update meal logs");
+        }
 
 
 

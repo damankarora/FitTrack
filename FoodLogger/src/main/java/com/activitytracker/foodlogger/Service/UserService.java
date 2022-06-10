@@ -36,7 +36,6 @@ public class UserService {
     }
 
     public void updateUser(User user) throws NoSuchElementException{
-        System.out.println(user.getName() + " " + user.getId());
 
         User foundUser = userRepository.findById(user.getId()).orElse(null);
 

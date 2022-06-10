@@ -28,7 +28,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        System.out.println("Password: " + this.password);
         return this.password;
     }
 

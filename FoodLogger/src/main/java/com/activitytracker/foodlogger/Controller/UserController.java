@@ -1,5 +1,6 @@
 package com.activitytracker.foodlogger.Controller;
 
+import com.activitytracker.foodlogger.Commons.AuthenticatedUserContainer;
 import com.activitytracker.foodlogger.Commons.ExceptionContainer;
 import com.activitytracker.foodlogger.Model.User;
 import com.activitytracker.foodlogger.Model.UserCred;
@@ -13,8 +14,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,7 +26,6 @@ import java.util.NoSuchElementException;
 @ApiResponse(responseCode = "200", description = "Success")
 public class UserController {
 
-//    TODO: Configure endpoints to get UserId from session instead of url.
 
     private final UserService userService;
     private final UserCredService userCredService;
@@ -40,9 +38,7 @@ public class UserController {
     @RequestMapping("/")
     @Operation(description = "Home page")
     public String home(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-        return authentication.getName();
+        return AuthenticatedUserContainer.getAuthenticatedUsername();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/user")
@@ -77,7 +73,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/user")
+    @RequestMapping(method = RequestMethod.GET, value = "/user/all")
     @Operation(description = "Get all users")
     public List<User> getAllUsers(){
         return userService.getAllUsers();
@@ -92,9 +88,10 @@ public class UserController {
             "    \"path\": \"/*\"\n" +
             "}")))
     @Operation(description = "Get details of a user by id")
-    @RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
-    public User getSingleUser(@PathVariable String userId){
-        return userService.getUserDetails(Integer.valueOf(userId));
+    @RequestMapping(method = RequestMethod.GET, value = "/user/current")
+    public User getCurrentUser(){
+        UserCred loggedUser = userCredService.findByUsername(AuthenticatedUserContainer.getAuthenticatedUsername());
+        return loggedUser.getUserDetails();
     }
 
     @ApiResponse(responseCode = "400", description = "Invalid userId",
@@ -108,13 +105,22 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT, value = "/user")
     @Operation(description = "Update details of a user")
     public void updateUser(@RequestBody User updatedUser){
-
+        //TODO: Add validation on email update (because it has to be unique).
         try {
+            UserCred loggedUser = userCredService.findByUsername(AuthenticatedUserContainer.getAuthenticatedUsername());
+            updatedUser.setId(loggedUser.getUserDetails().getId());
+
+            // To prevent null insertion in non-nullable fields.
+            if (StringUtils.isEmpty(updatedUser.getName())){
+                updatedUser.setName(loggedUser.getUserDetails().getName());
+            }
+            if (StringUtils.isEmpty(updatedUser.getEmail())){
+                updatedUser.setEmail(loggedUser.getUserDetails().getEmail());
+            }
             userService.updateUser(updatedUser);
         }catch (NoSuchElementException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
-
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/user/{userId}")
@@ -127,12 +133,14 @@ public class UserController {
                             "    \"path\": \"/*\"\n" +
                             "}")))
     @Operation(description = "Delete a user by userId")
-    public void deleteUser(@PathVariable String userId){
+    public String deleteUser(@PathVariable Integer userId){
         try{
-            userService.deleteUser(Integer.valueOf(userId));
+            UserCred foundCred = userCredService.findCredByDetailId(userId);
+            userCredService.deleteUser(foundCred.getId());
+            return "SUCCESS";
         }
         catch (EmptyResultDataAccessException e){
-            System.out.println(e.getExpectedSize());
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid userId");
         }
     }
