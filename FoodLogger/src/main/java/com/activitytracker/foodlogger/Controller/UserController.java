@@ -1,10 +1,12 @@
 package com.activitytracker.foodlogger.Controller;
 
+import com.activitytracker.foodlogger.Commons.ExceptionContainer;
 import com.activitytracker.foodlogger.Model.User;
 import com.activitytracker.foodlogger.Model.UserCred;
 import com.activitytracker.foodlogger.Payloads.CreateUserPayload;
 import com.activitytracker.foodlogger.Service.UserCredService;
 import com.activitytracker.foodlogger.Service.UserService;
+import com.activitytracker.foodlogger.Utils.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -16,12 +18,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
 @ApiResponse(responseCode = "200", description = "Success")
 public class UserController {
+
+//    TODO: Configure endpoints to get UserId from session instead of url.
 
     private final UserService userService;
     private final UserCredService userCredService;
@@ -41,20 +47,31 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/user")
     @Operation(description = "Create a new User")
-    public String createUser(@RequestBody CreateUserPayload user){
+    public String createUser(@RequestBody CreateUserPayload user, HttpServletResponse response){
 
         try{
-            UserCred addedUserCred = userCredService.registerUser(user.getUsername(), user.getPassword(), "ROLE_USER");
-            User userDetails = userService.addNewUser(new User(
-                    user.getName(), user.getUsername(), user.getGender(),
-                    user.getHeight(), user.getHeightUnit(), user.getWeight(),
-                    user.getWeightUnit(), user.getAge()
-            ));
-            addedUserCred.setUserDetails(userDetails);
-            userCredService.updateUser(addedUserCred);
-            return "Success";
-        } catch (Exception err) {
-            System.out.println(err);
+            if(validateCreatePayload(user)){
+                UserCred addedUserCred = userCredService.registerUser(user.getUsername(), user.getPassword(), "ROLE_USER");
+                User userDetails = userService.addNewUser(new User(
+                        user.getName(), user.getUsername(), user.getGender(),
+                        user.getHeight(), user.getHeightUnit(), user.getWeight(),
+                        user.getWeightUnit(), user.getAge()
+                ));
+                addedUserCred.setUserDetails(userDetails);
+                userCredService.updateUser(addedUserCred);
+                return "Success";
+            }
+            throw new ExceptionContainer.InvalidPayloadException();
+
+
+        } catch (ExceptionContainer.InvalidPayloadException err){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Required Fields Missing");
+        } catch (ExceptionContainer.UserAlreadyExistsException err){
+            //Redirecting to login page.
+            response.addHeader("Location", "/login");
+            throw new ResponseStatusException(HttpStatus.valueOf(302));
+        }
+        catch (Exception err) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Something went wrong");
         }
 
@@ -120,5 +137,9 @@ public class UserController {
         }
     }
 
-
+    private static boolean validateCreatePayload(CreateUserPayload userPayload){
+        return !StringUtils.isEmptyMultiple(Arrays.asList(
+                userPayload.getUsername(), userPayload.getName(), userPayload.getPassword()
+        ));
+    }
 }
