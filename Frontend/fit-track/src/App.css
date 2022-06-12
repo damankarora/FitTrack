@@ -1,0 +1,323 @@
+/* Font Integration */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap');
+
+/* Background Wall */
+.circle{
+    height: 175px;
+    width: 175x;
+    position: absolute;
+    left: 33px;
+    top: 30px;
+    z-index: -1;
+}
+.upperLeftEclipse{
+    width: 600px;
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    z-index: -2;
+}
+.upperRightEclipse{
+    width: 1010px;
+    height: 190px;
+    position: absolute;
+    left: 270px;
+    top: 0px;
+    z-index: -1;
+}
+.lowerLeftEclipse{
+    /* width: 1000px; */
+    height: 245px;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    z-index: -1;
+}
+
+/* Overlay */
+.overlay{
+    position: absolute;
+    top: 65px;
+    left: 70px;
+    background-color: #fff;
+    opacity: 0.4;
+    height: 475px;
+    width: 1135px;
+    box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+}
+
+/* Human */
+.human{
+    width: 350px;
+    height: 320px;
+    position: absolute;
+    left: 700px;
+    top: 190px;
+    z-index: 1;
+}
+
+/* Login Nav */
+.loginNav{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    position: fixed;
+    top: 80px;
+}
+
+.loginNav div{
+    margin-right: 150px;
+    cursor: pointer;
+}
+
+.loginNav div:first-of-type{
+    margin-left: 70px;
+    margin-right: 250px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* Login Overlay*/
+.loginAreaOverlay{
+    position: absolute;
+    top: 160px;
+    left: 300px;
+    background-color: #fff;
+    opacity: 0.5;
+    height: 350px;
+    width: 300px;
+}
+
+/* Login Area */
+.loginArea{
+    position: absolute;
+    top: 160px;
+    left: 300px;
+    height: 350px;
+    width: 300px;
+}
+
+.loginHeader{
+    font-family: 'Montserrat', sans-serif;
+    color: #242424;
+    font-size: 21px;
+    margin-left: 110px;
+    position: absolute;
+    top: 25px;
+}
+
+.email{
+    font-family: 'Montserrat', sans-serif;
+    opacity: 0.9;
+    font-size: 16px;
+    margin-left: 40px;
+    position: absolute;
+    top: 80px;
+    height: 30px;
+    width: 225px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #444444;
+}
+
+.password{
+    font-family: 'Montserrat', sans-serif;
+    opacity: 0.9;
+    font-size: 16px;
+    margin-left: 40px;
+    position: absolute;
+    top: 135px;
+    height: 30px;
+    width: 225px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #444444;
+}
+
+.loginButton{
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    position: absolute;
+    border: none;
+    margin-left: 41px;
+    border-radius: 20px;
+    top: 190px;
+    height: 40px;
+    width: 225px;
+    background-image: linear-gradient(to right, #F77062 0%, #FE5196 100%);
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.forgot{
+    font-family: 'Montserrat', sans-serif;
+    color: #242424;
+    font-size: 12px;
+    margin-left: 105px;
+    position: absolute;
+    top: 245px;
+    cursor: pointer;
+}
+
+.dontHave{
+    font-family: 'Montserrat', sans-serif;
+    color: #242424;
+    font-size: 12px;
+    margin-left: 70px;
+    position: absolute;
+    top: 270px;
+}
+
+.dontHave span{
+    cursor: pointer;
+}
+
+/* Home Page */
+.navbar{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    height: 60px;
+    background-image: linear-gradient(to right, #3178A2 0%, #30CFD0 100%);
+}
+
+.navbar div{ 
+    padding-top: 16px;
+    margin-right: 150px;
+    cursor: pointer;
+}
+
+.navbar div:first-of-type{
+    padding-top: 14px;
+    margin-left: 25px;
+    margin-right: 450px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.navbar div:last-of-type{
+    margin-right: 100px;
+}
+
+.homeContainer{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    margin: 10px;
+}
+
+.homeContainer > div{
+    background-color: #30CFD0;
+    height: 254px;
+    box-shadow: #AEECEC 0px 2px 8px 0px;
+    margin-bottom: 10px;
+    border: none;
+}
+
+.homeContainer > div:nth-child(2n){
+    margin-left: 10px;
+}
+
+.userIcon{
+    font-size: 25px;
+    position: absolute;
+    right: 130px;
+    top: 13px;
+}
+
+.downArrow{
+    font-size: 30px;
+    position: absolute;
+    right: 100px;
+    top: 12px;
+}
+
+.graphicalData{
+    height: 80px;
+    width: 250px;
+}
+
+.header{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #3178A2;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-align: center;
+}
+
+.foodImage{
+    height: 230px;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+
+.humanStanding{
+    height: 230px;
+    width: 220px;
+    margin-top: 10px;
+}
+
+.inline{
+    float: left;
+}
+
+.clearBoth{
+    clear: both;
+}
+.useractivity{
+    margin-top: 30px;
+}
+.useractivity > div{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #3178A2;
+    margin-left: 30px;
+    margin-top: 20px;
+    font-weight: 600;
+}
+.useractivity span{
+    font-weight: 400;
+    margin-left: 20px;
+}
+
+::root {
+--val: 0;
+}
+
+svg {
+transform: rotate(-90deg);
+}
+
+.percent {
+stroke-dasharray: 100;
+stroke-dashoffset: calc(100 - var(--val));
+}
+
+.fifty {
+--val: 50;
+}
+
+.sixty {
+--val: 60;
+}
+
+.ninety {
+--val: 90;
+}
+
+.log{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #3178A2;
+    margin-left: 30px;
+    font-weight: 600;
+}
+
+.userProgress > div {
+    display: inline-block;
+}
