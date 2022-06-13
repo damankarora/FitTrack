@@ -6,8 +6,8 @@ import Data from "./Components/Data";
 function App() {
   return (
       <div className="App">
-        {/* <Landing /> */}
-        <Home />
+        <Landing />
+        {/* <Home /> */}
          {/* <Data />  */}
       </div>
   );
