@@ -1,22 +1,23 @@
 import * as React from "react"
+import '../App.css'
 
 const SvgComponent = (props) => (
-  <svg width={80} height={80} {...props}>
+  <svg width={40} height={40} {...props} className="rotate">
     <circle
-      cx={60}
-      cy={60}
+      cx={22}
+      cy={24}
       r={15}
       fill="#fff"
       stroke="#e6e6e6"
       strokeWidth={2}
     />
     <circle
-      className="percent ninety"
-      cx={60}
-      cy={60}
+      className="percent sixty"
+      cx={22}
+      cy={24}
       r={15}
       fill="none"
-      stroke="#f77a52"
+      stroke={props.stroke}
       strokeWidth={2}
       pathLength={100}
     />

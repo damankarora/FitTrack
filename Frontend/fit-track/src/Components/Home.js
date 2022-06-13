@@ -2,6 +2,10 @@ import React from "react";
 import SvgComponent from "./SvgComponent";
 import Data from "./Data";
 import { BiUser,BiChevronDown } from "react-icons/bi";
+import { ImSpoonKnife } from "react-icons/im";
+import { GiGlassShot } from "react-icons/gi";
+import { IoFootsteps } from "react-icons/io5";
+import { FaRunning, FaWeight} from "react-icons/fa";
 import FitFood  from '../Images/FitFood.png'
 import HumanStanding from '../Images/HumanStanding.png'
 import '../App.css'
@@ -38,11 +42,16 @@ function Home(){
             <div className="activityLog">
                 <div className="header">Activity Log</div>
                 <div className="userProgress">
-                    <div><SvgComponent /> <span className="log">900 Of 1800 cal</span></div>
-                    <div><SvgComponent /> <span className="log">2 Of 8 Glasses</span></div>
-                    <div><SvgComponent /> <span className="log">10,000 Of 10,000 Steps</span></div>
-                    <div><SvgComponent /> <span className="log">130 Of 360 Cal</span></div>
-                    <div><SvgComponent /> <span className="log">62 Kg Set Weight Goal</span></div>
+                    <div><SvgComponent stroke="#f0525a"/><ImSpoonKnife className="insideCircle"/></div>
+                    <div className="log">900 Of 1800 cal</div>
+                    <div><SvgComponent stroke="#ffce00"/><GiGlassShot className="insideCircle"/></div>
+                    <div className="log">2 Of 8 Glasses</div>
+                    <div><SvgComponent stroke="#4166F5"/><IoFootsteps className="insideCircle"/></div>
+                    <div className="log">10,000 Of 10,000 Steps</div>
+                    <div><SvgComponent stroke="#367aa4"/><FaRunning className="insideCircle"/></div>
+                    <div className="log">130 Of 360 Cal</div>
+                    <div><SvgComponent stroke="#272727"/><FaWeight className="insideCircle"/></div>
+                    <div className="log">62 Kg Set Weight Goal</div>
                 </div>
             </div>
         </div>

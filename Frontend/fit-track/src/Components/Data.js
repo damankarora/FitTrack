@@ -8,7 +8,7 @@ const data = {
   labels: ["Protien", "Carbs", "Fat"],
   datasets: [
     {
-      data: [99, 166, 24],
+      data: [99, 166, 66],
       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       borderWidth: 1
