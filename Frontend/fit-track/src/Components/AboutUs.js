@@ -4,11 +4,11 @@ import '../App.css'
 import {useSelector} from "react-redux";
 
 function AboutUs(){
-    const myState = useSelector((state) => state.toggleLoginState);
+    const toggleHome = useSelector((state) => state.toggleAboutUSHomeState);
     return(
         <>
             <div className="aboutUs">
-                <h3 className="aboutHeader">About Us</h3>
+                <h3 className={` ${toggleHome ? 'aboutHeader' : 'aboutHeaderTop'}`}>About Us</h3>
                 <div className="aboutUsContent">
                     Being healthy means not only away from diseases but it also means the complete feeling of physical, mental and social well being. Maintaining health and fitness is not a simple task however; not so tough too. We need to involve ourselves into some daily physical activities together with the healthy, fresh and timely food which can only provide us long-term health and fitness benefits. We burn extra and unnecessary calories to our body through physical exercises. Daily physical exercises keep kids so active and put them on a path of better physical and mental health.
 

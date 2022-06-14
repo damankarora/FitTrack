@@ -10,7 +10,7 @@ function Login(){
     return(
         <>
             <div className="background">
-                <img src={Human} alt="human" className="human" />
+                <img src={Human} alt="human" className={` ${myState ? 'human' : 'humanLeft'}`}/>
             </div>
             {myState?<LoginForm />:<SignUpForm />}
         </>

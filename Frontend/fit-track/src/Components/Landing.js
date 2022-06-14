@@ -8,6 +8,7 @@ import AboutUs from "./AboutUs";
 import '../App.css'
 import { toggleNavbarState } from "../Redux/Action/Action.js";
 import {useSelector,useDispatch} from "react-redux";
+import swal from 'sweetalert';
 
 function Landing(){
 
@@ -16,7 +17,19 @@ function Landing(){
     const dispatch = useDispatch();
 
     const  loginAlert = () =>{
-        alert("Login Please");
+        if(navbarState === false){ 
+            dispatch(toggleNavbarState());  
+            swal({
+                title: "Login Please",
+                button: "Okay",
+            });
+        }
+        else{
+            swal({
+                title: "Login Please",
+                button: "Okay",
+            });
+        }
     }
 
     const  aboutUsStateHandler = () =>{
